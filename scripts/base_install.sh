@@ -69,17 +69,15 @@ if [ -b $LOG_VOLUME_DEVICE ]; then
 EOF
 fi
 
-HDFS_VOLUME_ID="$hdfs_volume_id$"
-HDFS_VOLUME_DEVICE="/dev/disk/by-id/virtio-$(echo ${HDFS_VOLUME_ID} | cut -c -20)"
+HDFS_VOLUME_DEVICE="/dev/vdb"
 echo HDFS_VOLUME_DEVICE is $HDFS_VOLUME_DEVICE
 if [ -b $HDFS_VOLUME_DEVICE ]; then
   echo HDFS_VOLUME_DEVICE exists
+  df -Th $HDFS_VOLUME_DEVICE
   umount $HDFS_VOLUME_DEVICE || echo 'not mounted'
-  mkfs.xfs $HDFS_VOLUME_DEVICE
+  mkfs.xfs -f $HDFS_VOLUME_DEVICE
   mkdir -p /data0
-  cat >> /etc/fstab <<EOF
-  $HDFS_VOLUME_DEVICE  /data0 xfs defaults  0 0
-EOF
+  sed -i "s|$HDFS_VOLUME_DEVICE.*|$HDFS_VOLUME_DEVICE /data0 xfs defaults  0 0|" /etc/fstab
 fi
 
 if [[ "$package_repository_fs_type$" == "local" ]]; then

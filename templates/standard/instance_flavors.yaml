@@ -14,8 +14,7 @@ parameter_defaults:
   ToolsFlavor: ec2.m3.large
   ZookeeperFlavor: ec2.m3.large
   KafkaFlavor: ec2.m3.xlarge
-  DatanodeFlavor: ec2.m4.2xlarge
+  DatanodeFlavor: ec2.m4.2xlarge.eph
   BastionFlavor: ec2.t2.medium
   SaltmasterFlavor: ec2.m3.large
-  DatanodeVolumeSize: 1024
   PndaFlavor: standard

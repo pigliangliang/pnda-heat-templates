@@ -83,9 +83,6 @@ parameters:
     default: 2
     description: Number of Opentsdb nodes
     type: number
-  DatanodeVolumeSize:
-    default: 200
-    type: number
   PndaFlavor:
     description: pnda flavor
     type: string
@@ -133,7 +130,6 @@ resources:
       KafkaNodes: { get_param: KafkaNodes }
       DataNodes: { get_param: DataNodes }
       OpentsdbNodes: { get_param: OpentsdbNodes }
-      DatanodeVolumeSize : { get_param: DatanodeVolumeSize }
       signal_transport: { get_param: signal_transport }
       software_config_transport: { get_param: software_config_transport }
 

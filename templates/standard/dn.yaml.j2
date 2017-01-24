@@ -29,9 +29,6 @@ parameters:
     default: 0
   sec_group:
     type: string
-  volume_size:
-    type: number
-    default: 50
   cluster_name:
     type: string
   pnda_secgroup:
@@ -71,11 +68,10 @@ resources:
             $master_ip$: { get_param: SaltmasterIP }
             $pnda_cluster$: { get_param: cluster_name }
             $log_volume_id$: { get_resource: logvolume }
-            $hdfs_volume_id$: { get_resource: volume }
             $cloudera_role$: 'DATANODE'
   install_deployment:
     type: OS::Heat::SoftwareDeployment
-    depends_on: [ volume_attachment, logvolume_attachment ]
+    depends_on: [ logvolume_attachment ]
     properties:
       signal_transport: { get_param: signal_transport }
       config:
@@ -100,18 +96,6 @@ resources:
         group: { get_param: scheduler_group_hint}
 {%endif%}
 
-
-  volume:
-    type: OS::Cinder::Volume
-    properties:
-      size: { get_param: volume_size }
-      description: Volume for datanode
-  volume_attachment:
-    type: OS::Cinder::VolumeAttachment
-    depends_on: logvolume_attachment
-    properties:
-      volume_id: { get_resource: volume }
-      instance_uuid: { get_resource: server }
   logvolume:
     type: OS::Cinder::Volume
     properties:
